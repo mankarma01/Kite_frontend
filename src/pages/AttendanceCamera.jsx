@@ -138,11 +138,14 @@ export default function AttendanceCamera() {
 
       if (distance < 0.5) {
         // Face Matched -> Now get Location
+        const email = localStorage.getItem('email');
+        console.log(email);
         navigator.geolocation.getCurrentPosition(async (position) => {
           try {
             await API.post("/employee/mark-attendance", {
               latitude: position.coords.latitude,
-              longitude: position.coords.longitude
+              longitude: position.coords.longitude,
+              email:email
             });
             setStatus({ type: 'success', message: 'Attendance Marked! Welcome.' });
           } catch (err) {

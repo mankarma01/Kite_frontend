@@ -217,7 +217,11 @@ const AdminOverview = () => {
 
   return (
     // Added horizontal padding for mobile (px-4) and larger for desktop (md:p-0)
-    <div className="space-y-6 animate-in fade-in duration-700">
+    <div className="space-y-6 animate-in fade-in duration-700" style={
+      {"marginTop":'16px',
+        marginLeft:'10px'
+      }
+    }>
       
       {/* --- HEADER SECTION --- */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

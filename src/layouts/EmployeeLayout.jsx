@@ -10,14 +10,20 @@
 //   return <DashboardLayout menuItems={EMPLOYEE_MENU} roleName="Employee" initialInitials="EM" />;
 // }
 
-import { LayoutDashboard, Camera } from "lucide-react";
+import { LayoutDashboard, Camera, LogOut} from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
+
 
 export default function EmployeeLayout() {
   const employeeMenu = [
     { text: "My Stats", path: "/employee/dashboard", icon: <LayoutDashboard size={18} /> },
     { text: "Attendance", path: "/attendance", icon: <Camera size={18} /> },
+    {
+  text: "Check Out",
+  path: "/checkout",
+  icon: <LogOut size={18} />,
+}
   ];
 
   return (

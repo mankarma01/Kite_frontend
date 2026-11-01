@@ -28,6 +28,7 @@ export default function App() {
           <Route element={<EmployeeLayout />}>
             <Route path="/employee/dashboard" element={<EmployeeStats />} />
             <Route path="/attendance" element={<AttendanceCamera />} />
+            <Route path="/checkout" element={<AttendanceCamera />} />
           </Route>
         </Route>
 

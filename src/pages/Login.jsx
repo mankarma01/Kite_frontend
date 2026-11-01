@@ -19,19 +19,23 @@ export default function Login() {
 
     try {
       // 1. Backend API call using the central API.js config
-      const response = await API.post("api/auth/login", { 
+      const response = await API.post("/auth/login", { 
         email: email, 
         password: password 
-      });
+      },
+      {
+        withCredentials: true
+      }
+    );
 
       // 2. Check if response is successful (Based on your Spring Boot structure)
     if (response.data.success) {
-  const { token, role, fullName } = response.data.data;
+  const { role, fullName, email } = response.data.data;
   
-  localStorage.setItem("token", token);
   localStorage.setItem("role", role); // e.g., "ROLE_ADMIN"
   localStorage.setItem("userName", fullName);
-
+  localStorage.setItem("email", email);
+  console.log(localStorage.getItem('role'));
   // Structured Routing Based on Role
   if (role === "ROLE_ADMIN" || role === "ADMIN") {
     navigate("/admin/dashboard");
@@ -39,7 +43,7 @@ export default function Login() {
     navigate("/employee/dashboard");
   }
 }
-    } 
+    }
     catch (err) {
       console.error("Login Error:", err);
       // Agar backend se koi error message aa raha hai toh wahi dikhayenge
