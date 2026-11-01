@@ -15,18 +15,19 @@
 //   return <Outlet />;
 // };
 
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { getAuthSession } from "../api/api";
 
 export const ProtectedRoute = ({ allowedRoles }) => {
-
-    const role = localStorage.getItem("role");
+    const { role } = getAuthSession();
+    const location = useLocation();
 
     if (!role) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/login" replace state={{ from: location.pathname }} />;
     }
 
     if (allowedRoles && !allowedRoles.includes(role)) {
-        return <Navigate to="/unauthorized" replace />;
+        return <Navigate to="/unauthorized" replace state={{ from: location.pathname }} />;
     }
 
     return <Outlet />;

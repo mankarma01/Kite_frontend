@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import Unauthorized from "./pages/Unauthorized";
 import AdminLayout from "./layouts/AdminLayout";
 import EmployeeLayout from "./layouts/EmployeeLayout";
 import AdminOverview from "./pages/AdminOverview";
@@ -8,14 +9,27 @@ import EmployeeStats from "./pages/EmployeeStats";
 import AttendanceCamera from "./pages/AttendanceCamera";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
 
+function RootRedirect() {
+  const role = localStorage.getItem("role");
+
+  if (role === "ROLE_ADMIN" || role === "ADMIN") {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  if (role) {
+    return <Navigate to="/employee/dashboard" replace />;
+  }
+
+  return <Navigate to="/login" replace />;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Route */}
         <Route path="/login" element={<Login />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* Admin Routes */}
         <Route element={<ProtectedRoute allowedRoles={["ROLE_ADMIN"]} />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminOverview />} />
@@ -23,7 +37,6 @@ export default function App() {
           </Route>
         </Route>
 
-        {/* Employee Routes */}
         <Route element={<ProtectedRoute allowedRoles={["ROLE_EMPLOYEE"]} />}>
           <Route element={<EmployeeLayout />}>
             <Route path="/employee/dashboard" element={<EmployeeStats />} />
@@ -32,8 +45,8 @@ export default function App() {
           </Route>
         </Route>
 
-        {/* Redirects */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<RootRedirect />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
