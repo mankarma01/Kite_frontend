@@ -5,16 +5,27 @@ const API = axios.create({
     withCredentials: true,
 });
 
-// No request interceptor needed anymore
+export const clearAuthSession = () => {
+    localStorage.removeItem("role");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("email");
+};
+
+export const getAuthSession = () => ({
+    role: localStorage.getItem("role"),
+    userName: localStorage.getItem("userName"),
+    email: localStorage.getItem("email"),
+});
 
 API.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            localStorage.removeItem("role");
-            localStorage.removeItem("userName");
+            clearAuthSession();
 
-            window.location.href = "/login";
+            if (window.location.pathname !== "/login") {
+                window.location.href = "/login";
+            }
         }
 
         return Promise.reject(error);
